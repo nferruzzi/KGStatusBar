@@ -60,6 +60,7 @@
         [self.overlayWindow addSubview:self];
     [self.overlayWindow setHidden:NO];
     [self.topBar setHidden:NO];
+    self.topBar.alpha = 0.0f;
     self.topBar.backgroundColor = barColor;
     NSString *labelText = status;
     CGRect labelRect = CGRectZero;
@@ -70,15 +71,15 @@
         stringWidth = stringSize.width;
         stringHeight = stringSize.height;
         
-        labelRect = CGRectMake((self.topBar.frame.size.width / 2) - (stringWidth / 2), 0, stringWidth, stringHeight);
+        labelRect = CGRectMake((self.topBar.frame.size.width / 2) - (stringWidth / 2), 0, stringWidth, 44);
     }
     self.stringLabel.frame = labelRect;
-    self.stringLabel.alpha = 0.0;
+    self.stringLabel.alpha = 1.0;
     self.stringLabel.hidden = NO;
     self.stringLabel.text = labelText;
     self.stringLabel.textColor = textColor;
     [UIView animateWithDuration:0.4 animations:^{
-        self.stringLabel.alpha = 1.0;
+        self.topBar.alpha = 1.0;
     }];
     [self setNeedsDisplay];
 }
@@ -86,7 +87,7 @@
 - (void) dismiss
 {
     [UIView animateWithDuration:0.4 animations:^{
-        self.stringLabel.alpha = 0.0;
+        self.topBar.alpha = 0.0;
     } completion:^(BOOL finished) {
         [topBar removeFromSuperview];
         topBar = nil;
@@ -109,7 +110,7 @@
 
 - (UIView *)topBar {
     if(!topBar) {
-        topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 0, overlayWindow.frame.size.width, 20.0)];
+        topBar = [[UIView alloc] initWithFrame:CGRectMake(0, 20, overlayWindow.frame.size.width, 44.0)];
         [overlayWindow addSubview:topBar];
     }
     return topBar;
